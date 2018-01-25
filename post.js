@@ -1,3 +1,10 @@
+/*
+Maccmiles
+01-25-18
+Generate HTML POST Requests without page redirection
+input msg - enter a string to be sent via content field of POST request (preferably one that won't break the code)
+array api - secondary file holding an array of URL's (Webhook API) for post request to be sent to
+*/
 function DiscPost(msg){
     msg = "`" + msg + "`";
     params = {"content": "`" + msg + "`"};
@@ -5,25 +12,25 @@ function DiscPost(msg){
 	i = 0;
 	do{
 	url = api[i];
-    // function to remove the iframe
+    // Remove IFrame
     var removeIframe = function( iframe ){
         iframe.parentElement.removeChild(iframe);
     };
     
-    // make a iframe...
+    // Create IFrame
     var iframe = document.createElement('iframe');
     iframe.style.display = 'none';
     
     iframe.onload = function(){
         var iframeDoc = this.contentWindow.document;
         
-        // Make a invisible form
+        // Create invisible Form
         var form = iframeDoc.createElement('form');
         form.method = method;
         form.action = url;
         iframeDoc.body.appendChild(form);
         
-        // pass the parameters
+        // Pass params to Form
         for( var name in params ){
             var input = iframeDoc.createElement('input');
             input.type = 'hidden';
@@ -33,7 +40,7 @@ function DiscPost(msg){
         }
         
         form.submit();
-        // remove the iframe
+        // Remove IFrame
         setTimeout( function(){ 
             removeIframe(iframe);
         }, 500);
@@ -41,4 +48,5 @@ function DiscPost(msg){
     
     document.body.appendChild(iframe);
 	i++;
-	}while (i != api.length);}
+	}while (i != api.length);
+}
